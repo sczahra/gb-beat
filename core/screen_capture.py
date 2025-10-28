@@ -16,7 +16,9 @@ class ScreenVisualizer:
 
     def _capture_frame(self):
         shot = self.sct.grab(self.region)
-        return np.array(shot)[:, :, :3]
+        # BGRA -> BGR, then copy to ensure contiguous memory for OpenCV ops
+        frame = np.array(shot)[:, :, :3].copy()
+        return frame
 
     def _apply_shake(self, frame_bgr):
         if self.shake_timer <= 0:
